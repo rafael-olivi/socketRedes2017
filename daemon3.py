@@ -5,7 +5,7 @@ import subprocess
 serverSocket = socket.socket(
         socket.AF_INET, socket.SOCK_STREAM)
 server = '192.168.56.1'
-port = 9001
+port = 9003
 resp = ''
 argsBinario = ''
 argsString = ''
