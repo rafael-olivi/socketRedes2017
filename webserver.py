@@ -84,24 +84,24 @@ if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_f
 
 	if form.getvalue('maq1_df'):
 		protocolo = '00000010'
-    	options1 = form.getvalue('maq1-df')
+    		options1 = form.getvalue('maq1-df')
 
-    if form.getvalue('maq1_finger'):
-        protocolo = '00000011'
-        options1 = form.getvalue('maq1-finger')
+	if form.getvalue('maq1_finger'):
+        	protocolo = '00000011'
+        	options1 = form.getvalue('maq1-finger')
 
-    if  form.getvalue('maq1_uptime'):
-        protocolo = '00000100'
-        options1 = form.getvalue('maq1-uptime')
+	if  form.getvalue('maq1_uptime'):
+        	protocolo = '00000100'
+        	options1 = form.getvalue('maq1-uptime')
 
-    if (options1 is None):
-        c1 = 0  
-        #opData = '000000000000000000000000'
-    else:
-        c1 = len(options1)
-        #conversao da string em binario
-        opBinario1 = [bin(ord(x))[2:].zfill(8) for x in options1]
-        opData1 = opData1.join(opBinario1)
+	if (options1 is None):
+        	c1 = 0  
+        	#opData = '000000000000000000000000'
+	else:
+        	c1 = len(options1)
+        	#conversao da string em binario
+        	opBinario1 = [bin(ord(x))[2:].zfill(8) for x in options1]
+        	opData1 = opData1.join(opBinario1)
 
 	total1 = 160 + (c1 * 8)
 
@@ -127,31 +127,31 @@ if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_f
 if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_finger') or form.getvalue('maq2_uptime'):
 
 	if form.getvalue('maq2_ps'):
-    	#Protocolo 8 bits
-    	protocolo = '00000001'
-    	#Option tamanho variavel
-    	options2 = form.getvalue('maq2-ps')
+    		#Protocolo 8 bits
+    		protocolo = '00000001'
+    		#Option tamanho variavel
+    		options2 = form.getvalue('maq2-ps')
 
-    if form.getvalue('maq2_df'):
-        protocolo = '00000010'
-        options2 = form.getvalue('maq2-df')
+	if form.getvalue('maq2_df'):
+	        protocolo = '00000010'
+	        options2 = form.getvalue('maq2-df')
 
-    if form.getvalue('maq2_finger'):
-        protocolo = '00000011'
-        options2 = form.getvalue('maq2-finger')
+	if form.getvalue('maq2_finger'):
+        	protocolo = '00000011'
+        	options2 = form.getvalue('maq2-finger')
 
-    if  form.getvalue('maq2_uptime'):
-        protocolo = '00000100'
-        options2 = form.getvalue('maq2-uptime')
+	if  form.getvalue('maq2_uptime'):
+        	protocolo = '00000100'
+        	options2 = form.getvalue('maq2-uptime')
 
-    if (options2 is None):
-        c2 = 0  
-        #opData = '000000000000000000000000'
-    else:
-        c2 = len(options2)
-        #conversao da string em binario
-        opBinario2 = [bin(ord(x))[2:].zfill(8) for x in options2]
-        opData2 = opData2.join(opBinario2)
+	if (options2 is None):
+        	c2 = 0  
+        	#opData = '000000000000000000000000'
+	else:
+        	c2 = len(options2)
+        	#conversao da string em binario
+        	opBinario2 = [bin(ord(x))[2:].zfill(8) for x in options2]
+        	opData2 = opData2.join(opBinario2)
 
 	total2 = 160 + (c2 * 8)
 
@@ -177,31 +177,31 @@ if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_f
 if form.getvalue('maq3_ps') or form.getvalue('maq3_df') or form.getvalue('maq3_finger') or form.getvalue('maq3_uptime'):
 
 	if form.getvalue('maq3_ps'):
-    	#Protocolo 8 bits
-    	protocolo = '00000001'
-    	#Option tamanho variavel
-    	options3 = form.getvalue('maq3-ps')
+    		#Protocolo 8 bits
+    		protocolo = '00000001'
+    		#Option tamanho variavel
+    		options3 = form.getvalue('maq3-ps')
 
-    if form.getvalue('maq3_df'):
-        protocolo = '00000010'
-        options3 = form.getvalue('maq3-df')
+	if form.getvalue('maq3_df'):
+	        protocolo = '00000010'
+	        options3 = form.getvalue('maq3-df')
 
-    if form.getvalue('maq3_finger'):
-        protocolo = '00000011'
-        options3 = form.getvalue('maq3-finger')
+	if form.getvalue('maq3_finger'):
+        	protocolo = '00000011'
+        	options3 = form.getvalue('maq3-finger')
 
-    if  form.getvalue('maq3_uptime'):
-        protocolo = '00000100'
-        options3 = form.getvalue('maq3-uptime')
+	if  form.getvalue('maq3_uptime'):
+        	protocolo = '00000100'
+        	options3 = form.getvalue('maq3-uptime')
 
-    if (options3 is None):
-        c3 = 0  
-        #opData = '000000000000000000000000'
-    else:
-        c3 = len(options3)
-        #conversao da string em binario
-        opBinario3 = [bin(ord(x))[2:].zfill(8) for x in options3]
-        opData3 = opData3.join(opBinario3)
+    	if (options3 is None):
+        	c3 = 0  
+        	#opData = '000000000000000000000000'
+    	else:
+        	c3 = len(options3)
+        	#conversao da string em binario
+        	opBinario3 = [bin(ord(x))[2:].zfill(8) for x in options3]
+        	opData3 = opData3.join(opBinario3)
 
 	total3 = 160 + (c3 * 8)
 

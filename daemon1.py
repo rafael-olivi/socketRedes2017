@@ -32,7 +32,7 @@ while True:
                 t = data[16:32]
                 if t == '':
                         t = 160
-                else
+                else:
                         tam = int(t, 2) #Tamanho do campo Options do cabecalho
                 
                 args = data[160:tam] #informacao do campo Options
