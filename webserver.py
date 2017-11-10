@@ -12,49 +12,6 @@ cgitb.enable()
 
 form = cgi.FieldStorage()
 
-<<<<<<< HEAD
-data = '' #string de dados que sera enviado
-resp = '' #resposta da requisicao feita
-options1 = ''
-protocolo = ''
-opBinario = ''
-opData = ''
-total = 0
-
-#----- Info Maquina 1 ----------
-if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_finger') or form.getvalue('maq1_uptime'):
-
-        if form.getvalue('maq1_ps'):
-                #Protocolo 8 bits
-                protocolo = '00000001'
-                #Option tamanho variavel
-                options1 = form.getvalue('maq1-ps')
-
-        if form.getvalue('maq1_df'):
-                protocolo = '00000010'
-                options1 = form.getvalue('maq1-df')
-
-        if form.getvalue('maq1_finger'):
-                protocolo = '00000011'
-                options1 = form.getvalue('maq1-finger')
-
-        if  form.getvalue('maq1_uptime'):
-                protocolo = '00000100'
-                options1 = form.getvalue('maq1-uptime')
-
-        if (cmp(options1, '')):
-                c = 0  
-                #opData = '000000000000000000000000'
-        else:
-                c = len(options1)
-                #conversao da string em binario
-                opBinario = [bin(ord(x))[2:].zfill(8) for x in options1]
-                opData = opData.join(opBinario)
-
-        total = 160 + (c * 8)
-
-# ----- Informacoes do cabecalho ---------
-=======
 options1 = '' #Campo de argumentos do comando da maquina 1
 options2 = '' #Campo de argumentos do comando da maquina 2
 options3 = '' #Campo de argumentos do comando da maquina 3
@@ -77,7 +34,6 @@ total2 = 0
 total3 = 0
 
 #---- Informacoes Fixas do Cabecalho ----------
->>>>>>> 1ffbe3ee386ffebca551f1df73985e23199555bb
 #Versao do protocolo 4 bits = 2
 version = '0010'
 
@@ -87,14 +43,6 @@ ihl = '1111'
 #Type of service 8 bits = 0
 tos = '00000000'
 
-<<<<<<< HEAD
-#Total Length 16 bits
-        #bl = total.bit_length()
-total_length = 8 * '0' + bin(total)[2:]
-#total_length = '0000000000000000'
-
-=======
->>>>>>> 1ffbe3ee386ffebca551f1df73985e23199555bb
 #Identification 16 bits 
 identification = '1000000000000000'
 
@@ -104,11 +52,8 @@ flags = '000'
 #Fragment Offset 13 bits = 0
 fOffset = '0000000000000'
 
-#Time to leave 8 bits = 4
+#Time to live 8 bits = 4
 ttl = '00000100'
-
-#TESTE
-#protocolo = '00000001'
 
 #Header_Checksum 16 bits - Verificacao
 header_checksum = '0000000000000000'
@@ -119,7 +64,7 @@ s_addr += '10101000' #168
 s_addr += '00111000' #56
 s_addr += '01100101' #101
 
-#Destination adress 32 bits - 192.168.56.1
+#Destnation adress 32 bits - 192.168.56.1
 d_addr =  '11000000' #192
 d_addr += '10101000' #168
 d_addr += '00111000' #56
@@ -128,21 +73,6 @@ d_addr += '00000001'
 #Padding 
 padding = '00000000'
 
-<<<<<<< HEAD
-
-#Juncao das informacoes 
-data += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData + padding
-
-#Cria a conexao e envia os dados
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(Daemon1)
-s.send(data)
-#Recebe a resposta
-resp += s.recv(1024)
-#print resp
-s.close()
-
-=======
 #----- Info Maquina 1 ----------
 if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_finger') or form.getvalue('maq1_uptime'):
 
@@ -193,7 +123,6 @@ if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_f
 	#print resp
 	s.close()
 
->>>>>>> 1ffbe3ee386ffebca551f1df73985e23199555bb
 #----- Info Maquina 2 ----------
 if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_finger') or form.getvalue('maq2_uptime'):
 
@@ -298,13 +227,9 @@ if form.getvalue('maq3_ps') or form.getvalue('maq3_df') or form.getvalue('maq3_f
 
 print("Content-Type: text/html;charset=utf-8\r\n\r\n")
 #print ("Content-Type: text/html\n\n")
-<<<<<<< HEAD
-print (resp)
-=======
 print ("<br>Machine #1</br>")
-print ("<br>"+resp1+"</br>")
+print ("<br>"+resp1.replace("\n", "<br />")+"</br>")
 print ("<br>Machine #2</br>")
-print ("<br>"+resp2+"</br>")
+print ("<br>"+resp2.replace("\n", "<br />")+"</br>")
 print ("<br>Machine #3</br>")
-print ("<br>"+resp3+"</br>")
->>>>>>> 1ffbe3ee386ffebca551f1df73985e23199555bb
+print ("<br>"+resp3.replace("\n", "<br />")+"</br>")
