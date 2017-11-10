@@ -5,7 +5,7 @@ import subprocess
 serverSocket = socket.socket(
         socket.AF_INET, socket.SOCK_STREAM)
 server = '192.168.56.1'
-port = 9001
+port = 9002
 resp = ''
 argsBinario = ''
 argsString = ''
@@ -14,9 +14,6 @@ split_string = lambda x, n: [x[i:i+n] for i in range(0, len(x), n)] #Dividir a s
 
 #serverSocket.bind((socket.gethostname(), 9001))
 serverSocket.bind(('localhost', port))
-
-serverSocket.listen(1)
-client, addr = serverSocket.accept()
 
 while 1:
         data = client.recv(1024)
