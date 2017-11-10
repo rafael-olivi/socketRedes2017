@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import socket
 import cgi, cgitb
+import threading
 
 ip = '127.0.0.1'
 
@@ -74,162 +75,212 @@ d_addr += '00000001'
 padding = '00000000'
 
 #----- Info Maquina 1 ----------
-if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_finger') or form.getvalue('maq1_uptime'):
+def Machine1():
+	global opData1
+	global options1
+	global data1
+	global resp1
+	global opBinario1
+	global total1
 
-	if form.getvalue('maq1_ps'):
-		#Protocolo 8 bits
-		protocolo = '00000001'
-		#Option tamanho variavel
-		options1 = form.getvalue('maq1-ps')
+	if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_finger') or form.getvalue('maq1_uptime'):
 
-	if form.getvalue('maq1_df'):
-		protocolo = '00000010'
-    		options1 = form.getvalue('maq1-df')
+		if form.getvalue('maq1_ps'):
+			#Protocolo 8 bits
+			protocolo = '00000001'
+			#Option tamanho variavel
+			options1 = form.getvalue('maq1-ps')
 
-	if form.getvalue('maq1_finger'):
-        	protocolo = '00000011'
-        	options1 = form.getvalue('maq1-finger')
+		if form.getvalue('maq1_df'):
+			protocolo = '00000010'
+	    		options1 = form.getvalue('maq1-df')
 
-	if  form.getvalue('maq1_uptime'):
-        	protocolo = '00000100'
-        	options1 = form.getvalue('maq1-uptime')
+		if form.getvalue('maq1_finger'):
+	        	protocolo = '00000011'
+	        	options1 = form.getvalue('maq1-finger')
 
-	if (options1 is None):
-        	c1 = 0  
-        	#opData = '000000000000000000000000'
-	else:
-        	c1 = len(options1)
-        	#conversao da string em binario
-        	opBinario1 = [bin(ord(x))[2:].zfill(8) for x in options1]
-        	opData1 = opData1.join(opBinario1)
+		if  form.getvalue('maq1_uptime'):
+	        	protocolo = '00000100'
+	        	options1 = form.getvalue('maq1-uptime')
 
-	total1 = 160 + (c1 * 8)
+		if (options1 is None):
+	        	c1 = 0  
+	        	#opData = '000000000000000000000000'
+		else:
+	        	c1 = len(options1)
+	        	#conversao da string em binario
+	        	opBinario1 = [bin(ord(x))[2:].zfill(8) for x in options1]
+	        	opData1 = opData1.join(opBinario1)
 
-	# ----- Informacoes do cabecalho ---------
-	#Total Length 16 bits
-	#bl = total.bit_length()
-	total_length = 8 * '0' + bin(total1)[2:]
-	#total_length = '0000000000000000'
+		total1 = 160 + (c1 * 8)
 
-	#Juncao das informacoes 
-	data1 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData1 + padding
+		# ----- Informacoes do cabecalho ---------
+		#Total Length 16 bits
+		#bl = total.bit_length()
+		total_length = 8 * '0' + bin(total1)[2:]
+		#total_length = '0000000000000000'
 
-	#Cria a conexao e envia os dados
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect(Daemon1)
-	s.send(data1)
-	#Recebe a resposta
-	resp1 += s.recv(1024)
-	#print resp
-	s.close()
+		#Juncao das informacoes 
+		data1 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData1 + padding
+
+		#Cria a conexao e envia os dados
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect(Daemon1)
+		s.send(data1)
+		#Recebe a resposta
+		resp1 += s.recv(1024)
+		#print resp
+		s.close()
 
 #----- Info Maquina 2 ----------
-if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_finger') or form.getvalue('maq2_uptime'):
+def Machine2():
+	global opData2
+	global options2
+	global data2
+	global resp2
+	global opBinario2
+	global total2
 
-	if form.getvalue('maq2_ps'):
-    		#Protocolo 8 bits
-    		protocolo = '00000001'
-    		#Option tamanho variavel
-    		options2 = form.getvalue('maq2-ps')
+	
+	if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_finger') or form.getvalue('maq2_uptime'):
 
-	if form.getvalue('maq2_df'):
-	        protocolo = '00000010'
-	        options2 = form.getvalue('maq2-df')
+		if form.getvalue('maq2_ps'):
+	    		#Protocolo 8 bits
+	    		protocolo = '00000001'
+	    		#Option tamanho variavel
+	    		options2 = form.getvalue('maq2-ps')
 
-	if form.getvalue('maq2_finger'):
-        	protocolo = '00000011'
-        	options2 = form.getvalue('maq2-finger')
+		if form.getvalue('maq2_df'):
+		        protocolo = '00000010'
+		        options2 = form.getvalue('maq2-df')
 
-	if  form.getvalue('maq2_uptime'):
-        	protocolo = '00000100'
-        	options2 = form.getvalue('maq2-uptime')
+		if form.getvalue('maq2_finger'):
+	        	protocolo = '00000011'
+	        	options2 = form.getvalue('maq2-finger')
 
-	if (options2 is None):
-        	c2 = 0  
-        	#opData = '000000000000000000000000'
-	else:
-        	c2 = len(options2)
-        	#conversao da string em binario
-        	opBinario2 = [bin(ord(x))[2:].zfill(8) for x in options2]
-        	opData2 = opData2.join(opBinario2)
+		if  form.getvalue('maq2_uptime'):
+	        	protocolo = '00000100'
+	        	options2 = form.getvalue('maq2-uptime')
 
-	total2 = 160 + (c2 * 8)
+		if (options2 is None):
+	        	c2 = 0  
+	        	#opData = '000000000000000000000000'
+		else:
+	        	c2 = len(options2)
+	        	#conversao da string em binario
+	        	opBinario2 = [bin(ord(x))[2:].zfill(8) for x in options2]
+	        	opData2 = opData2.join(opBinario2)
 
-	# ----- Informacoes do cabecalho ---------
-	#Total Length 16 bits
-	#bl = total.bit_length()
-	total_length = 8 * '0' + bin(total2)[2:]
-	#total_length = '0000000000000000'
+		total2 = 160 + (c2 * 8)
 
-	#Juncao das informacoes 
-	data2 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData2 + padding
+		# ----- Informacoes do cabecalho ---------
+		#Total Length 16 bits
+		#bl = total.bit_length()
+		total_length = 8 * '0' + bin(total2)[2:]
+		#total_length = '0000000000000000'
 
-	#Cria a conexao e envia os dados
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect(Daemon2)
-	s.send(data2)
-	#Recebe a resposta
-	resp2 += s.recv(1024)
-	#print resp
-	s.close()
+		#Juncao das informacoes 
+		data2 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData2 + padding
+
+		#Cria a conexao e envia os dados
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect(Daemon2)
+		s.send(data2)
+		#Recebe a resposta
+		resp2 += s.recv(1024)
+		#print resp
+		s.close()
 
 #----- Info Maquina 3 ----------
-if form.getvalue('maq3_ps') or form.getvalue('maq3_df') or form.getvalue('maq3_finger') or form.getvalue('maq3_uptime'):
+def Machine3():
+	global opData3
+	global options3
+	global data3
+	global resp3
+	global opBinario3
+	global total3
 
-	if form.getvalue('maq3_ps'):
-    		#Protocolo 8 bits
-    		protocolo = '00000001'
-    		#Option tamanho variavel
-    		options3 = form.getvalue('maq3-ps')
+	if form.getvalue('maq3_ps') or form.getvalue('maq3_df') or form.getvalue('maq3_finger') or form.getvalue('maq3_uptime'):
 
-	if form.getvalue('maq3_df'):
-	        protocolo = '00000010'
-	        options3 = form.getvalue('maq3-df')
+		if form.getvalue('maq3_ps'):
+	    		#Protocolo 8 bits
+	    		protocolo = '00000001'
+	    		#Option tamanho variavel
+	    		options3 = form.getvalue('maq3-ps')
 
-	if form.getvalue('maq3_finger'):
-        	protocolo = '00000011'
-        	options3 = form.getvalue('maq3-finger')
+		if form.getvalue('maq3_df'):
+		        protocolo = '00000010'
+		        options3 = form.getvalue('maq3-df')
 
-	if  form.getvalue('maq3_uptime'):
-        	protocolo = '00000100'
-        	options3 = form.getvalue('maq3-uptime')
+		if form.getvalue('maq3_finger'):
+	        	protocolo = '00000011'
+	        	options3 = form.getvalue('maq3-finger')
 
-    	if (options3 is None):
-        	c3 = 0  
-        	#opData = '000000000000000000000000'
-    	else:
-        	c3 = len(options3)
-        	#conversao da string em binario
-        	opBinario3 = [bin(ord(x))[2:].zfill(8) for x in options3]
-        	opData3 = opData3.join(opBinario3)
+		if  form.getvalue('maq3_uptime'):
+	        	protocolo = '00000100'
+	        	options3 = form.getvalue('maq3-uptime')
 
-	total3 = 160 + (c3 * 8)
+	    	if (options3 is None):
+	        	c3 = 0  
+	        	#opData = '000000000000000000000000'
+	    	else:
+	        	c3 = len(options3)
+	        	#conversao da string em binario
+	        	opBinario3 = [bin(ord(x))[2:].zfill(8) for x in options3]
+	        	opData3 = opData3.join(opBinario3)
 
-	# ----- Informacoes do cabecalho ---------
-	#Total Length 16 bits
-	#bl = total.bit_length()
-	total_length = 8 * '0' + bin(total3)[2:]
-	#total_length = '0000000000000000'
+		total3 = 160 + (c3 * 8)
 
-	#Juncao das informacoes 
-	data3 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData3 + padding
+		# ----- Informacoes do cabecalho ---------
+		#Total Length 16 bits
+		#bl = total.bit_length()
+		total_length = 8 * '0' + bin(total3)[2:]
+		#total_length = '0000000000000000'
 
-	#Cria a conexao e envia os dados
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect(Daemon3)
-	s.send(data3)
-	#Recebe a resposta
-	resp3 += s.recv(1024)
-	#print resp
-	s.close()
+		#Juncao das informacoes 
+		data3 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData3 + padding
 
-#--------- Mostrar informacoes --------
+		#Cria a conexao e envia os dados
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect(Daemon3)
+		s.send(data3)
+		#Recebe a resposta
+		resp3 += s.recv(1024)
+		#print resp
+		s.close()
 
-print("Content-Type: text/html;charset=utf-8\r\n\r\n")
-#print ("Content-Type: text/html\n\n")
-print ("<br>Machine #1</br>")
-print ("<br>"+resp1.replace("\n", "<br />")+"</br>")
-print ("<br>Machine #2</br>")
-print ("<br>"+resp2.replace("\n", "<br />")+"</br>")
-print ("<br>Machine #3</br>")
-print ("<br>"+resp3.replace("\n", "<br />")+"</br>")
+
+def main():	
+	#Criacao das threads
+	m1 = threading.Thread(target=Machine1, args=())
+	m2 = threading.Thread(target=Machine2, args=())
+	m3 = threading.Thread(target=Machine3, args=())
+
+	#Inicializacao das threads
+	m1.start()
+	m2.start()
+	m3.start()
+
+	#Espera a finalizacao das 3 threads
+	m1.join()
+	m2.join()
+	m3.join()
+
+	#--------- Mostrar informacoes --------
+	print("Content-Type: text/html;charset=utf-8\r\n\r\n")
+	#print ("Content-Type: text/html\n\n")
+	#print "M1: ", m1.isAlive()
+	print ("<br>Machine #1</br>")
+	print ("<br>"+resp1.replace("\n", "<br />")+"</br>")
+	print ("<br>Machine #2</br>")
+	print ("<br>"+resp2.replace("\n", "<br />")+"</br>")
+	print ("<br>Machine #3</br>")
+	print ("<br>"+resp3.replace("\n", "<br />")+"</br>")
+
+
+	return 0
+
+if __name__ == '__main__':main()
+
+
+

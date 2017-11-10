@@ -15,6 +15,9 @@ split_string = lambda x, n: [x[i:i+n] for i in range(0, len(x), n)] #Dividir a s
 #serverSocket.bind((socket.gethostname(), 9001))
 serverSocket.bind(('localhost', port))
 
+serverSocket.listen(1)
+client, addr = serverSocket.accept()
+
 while 1:
         data = client.recv(1024)
         print 'Data :', data
