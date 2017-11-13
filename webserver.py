@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+
 import socket
 import cgi, cgitb
 import threading
@@ -144,21 +144,22 @@ def Machine1():
 
 		#Juncao das informacoes 
 		data1 += version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + header_checksum + s_addr + d_addr + opData1 + padding
-        data1_hexa = '%08X' % int('10101010101010101', 2) # converte o cabeçalho para hexadecimal
-        new_header_checksum = "%x" % checksum(data1_hexa)
-        new_header_checksum = bin(int(new_header_checksum, 16))[2:]
+	        data1_hexa = '%08X' % int(data1, 2) # converte o cabecalho para hexadecimal
+	        new_header_checksum = "%x" % checksum(data1_hexa)
+	        new_header_checksum = bin(int(new_header_checksum, 16))[2:]
 
-        data1+= version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + new_header_checksum + s_addr + d_addr + opData1 + padding
+		data1 = ''
+	        data1+= version + ihl + tos + total_length + identification + flags + fOffset + ttl + protocolo + new_header_checksum + s_addr + d_addr + opData1 + padding
 
 
 		#Cria a conexao e envia os dados
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(Daemon1)
-        s.send(data1)
+	        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	        s.connect(Daemon1)
+	        s.send(data1)
 		#Recebe a resposta
-        resp1 += s.recv(1024)
+	        resp1 += s.recv(1024)
 		#print resp
-        s.close()
+	        s.close()
 
 #----- Info Maquina 2 ----------
 def Machine2():
