@@ -76,6 +76,13 @@ padding = '00000000'
 
 #----- Info Maquina 1 ----------
 def Machine1():
+	global opData1
+	global options1
+	global data1
+	global resp1
+	global opBinario1
+	global total1
+
 	if form.getvalue('maq1_ps') or form.getvalue('maq1_df') or form.getvalue('maq1_finger') or form.getvalue('maq1_uptime'):
 
 		if form.getvalue('maq1_ps'):
@@ -127,6 +134,14 @@ def Machine1():
 
 #----- Info Maquina 2 ----------
 def Machine2():
+	global opData2
+	global options2
+	global data2
+	global resp2
+	global opBinario2
+	global total2
+
+	
 	if form.getvalue('maq2_ps') or form.getvalue('maq2_df') or form.getvalue('maq2_finger') or form.getvalue('maq2_uptime'):
 
 		if form.getvalue('maq2_ps'):
@@ -178,6 +193,13 @@ def Machine2():
 
 #----- Info Maquina 3 ----------
 def Machine3():
+	global opData3
+	global options3
+	global data3
+	global resp3
+	global opBinario3
+	global total3
+
 	if form.getvalue('maq3_ps') or form.getvalue('maq3_df') or form.getvalue('maq3_finger') or form.getvalue('maq3_uptime'):
 
 		if form.getvalue('maq3_ps'):
@@ -229,22 +251,25 @@ def Machine3():
 
 
 def main():	
+	#Criacao das threads
 	m1 = threading.Thread(target=Machine1, args=())
 	m2 = threading.Thread(target=Machine2, args=())
 	m3 = threading.Thread(target=Machine3, args=())
 
+	#Inicializacao das threads
 	m1.start()
 	m2.start()
 	m3.start()
 
-	#print "Threading: ", m1.isAlive()
-
+	#Espera a finalizacao das 3 threads
 	m1.join()
 	m2.join()
 	m3.join()
+
 	#--------- Mostrar informacoes --------
 	print("Content-Type: text/html;charset=utf-8\r\n\r\n")
 	#print ("Content-Type: text/html\n\n")
+	#print "M1: ", m1.isAlive()
 	print ("<br>Machine #1</br>")
 	print ("<br>"+resp1.replace("\n", "<br />")+"</br>")
 	print ("<br>Machine #2</br>")
@@ -256,5 +281,6 @@ def main():
 	return 0
 
 if __name__ == '__main__':main()
+
 
 

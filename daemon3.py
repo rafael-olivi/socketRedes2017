@@ -20,7 +20,7 @@ client, addr = serverSocket.accept()
 
 while 1:
         data = client.recv(1024)
-        #print 'Data :', data
+        print 'Data :', data
         #Process data
         Op = data[72:80] #Protocolo
         if Op == '':
